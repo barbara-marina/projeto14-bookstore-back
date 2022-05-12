@@ -1,22 +1,21 @@
-//EXEMPLO
-// import db from "../db.js";
-// import bcrypt from "bcrypt";
-// import {v4 as uuid} from "uuid";
+import db from "../db.js";
+import bcrypt from "bcrypt";
+import {v4 as uuid} from "uuid";
 
-// export async function signIn(req, res) {
-//     const user = req.body;
-//     try {
-//         const userData = await db.collection("users").findOne({email: user.email});
+export default async function login(req, res) {
+    const userAuth = req.body;
+    try {
+        const userData = await db.collection("Users").findOne({email: userAuth.email});
+        console.log(userData);
+        if (!userData) return res.status(404).send("Usuário não existe.");
 
-//         if (userData && bcrypt.compareSync(user.password, userData.password)) {
-//             const token = uuid();
-//             await db.collection("sessions").insertOne({token, userId: userData._id});
-//             return res.send(token);
-//         }
-//         res.status(401).send("Unauthorized! Email or password is incorrect.");
-//     } catch(e) {
-//         res.sendStatus(500);
-//     }
-// }
-
-//OUTROS CONTROLLERS, EXEMPLO: userControllers.
+        if (userData && bcrypt.compareSync(userAuth.hash, userData.hash)) {
+            const token = uuid();
+            await db.collection("Sessions").insertOne({token, cpf: userData.cpf});
+            return res.send(token);
+        }
+        res.status(401).send("Não autorizado! Senha está incorreta.");
+    } catch(e) {
+        res.sendStatus(500);
+    }
+}

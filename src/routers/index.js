@@ -1,12 +1,7 @@
-// EXEMPLO
-// import { Router } from "express";
-// import authRouter from "./authRouter.js";
-// import userRouter from "./userRouter.js";
+import { Router } from "express";
+import authRouter from "./authRouter.js";
 
-// const router= Router();
-// router.use(authRouter);
-// router.use(userRouter);
+const router= Router();
+router.use(authRouter);
 
-// export default router;
-
-//OUTROS EXAMPLOS DE ARQUIVOS: authRouter.js, userRouter.js...
+export default router;
