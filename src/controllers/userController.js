@@ -1,20 +1,40 @@
 import db from "./../db.js";
 
 export async function getCategories(_req, res) {
-    const books = await db.collection("Books").find().toArray();
-    let categories = [];
-    books.forEach(book => {
-        book.genero.forEach(genre => {
-            if (!(categories.includes(genre))) {
-                categories.push(genre);
-            }
+    try {
+        const books = await db.collection("Books").find().toArray();
+        let categories = [];
+        books.forEach(book => {
+            book.genero.forEach(genre => {
+                if (!(categories.includes(genre))) {
+                    categories.push(genre);
+                }
+            });
         });
-        
-    });
-    res.send(categories);
+        res.send(categories);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+    
 }
 
 export async function getBooksData(_req, res) {
-    const books = await db.collection("Books").find().toArray();
-    res.send(books);
+    try{
+        const books = await db.collection("Books").find().toArray();
+        res.send(books);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+    
+}
+
+export async function logout (req, res) {
+    const authorization = req.headers.authorization;
+    const token = authorization?.replace("Bearer ", "").trim();
+    try {
+        await db.collection("Sessions").deleteOne({token: token});
+        res.sendStatus(200);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
 }
