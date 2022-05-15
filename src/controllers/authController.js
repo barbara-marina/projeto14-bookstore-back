@@ -7,6 +7,7 @@ async function login(req, res) {
     try {
         const userData = await db.collection("Users").findOne({email: userAuth.email});
         console.log(userData);
+
         if (!userData) return res.status(404).send("Usuário não existe.");
 
         if (userData && bcrypt.compareSync(userAuth.hash, userData.hash)) {
@@ -18,6 +19,7 @@ async function login(req, res) {
     } catch(e) {
         res.sendStatus(500);
     }
+
 }
 
 async function register(req,res){
