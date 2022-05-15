@@ -2,7 +2,6 @@ import db from "../db.js";
 import bcrypt from "bcrypt";
 import {v4 as uuid} from "uuid";
 
-
 async function login(req, res) {
     const userAuth = req.body;
     try {
@@ -50,4 +49,3 @@ async function register(req,res){
 }
 
 export {login , register}
-
