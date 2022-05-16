@@ -35,7 +35,7 @@ async function register(req,res){
         const user = {...userAuth, hash}
         
 
-        await db.collection("UserShoppingCart").insertOne({cpf: userAuth.cpf, shoppingCart: []})
+        await db.collection("UserShoppingCart").insertOne({cpf: userAuth.cpf, shoppingCart: [], total:"0,00"})
 
         await db.collection("Users").insertOne(user)
         return res.sendStatus(201)
