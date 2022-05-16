@@ -6,7 +6,6 @@ async function login(req, res) {
     const userAuth = req.body;
     try {
         const userData = await db.collection("Users").findOne({email: userAuth.email});
-        console.log(userData);
 
         if (!userData) return res.status(404).send("Usuário não existe.");
 
@@ -26,11 +25,9 @@ async function register(req,res){
     const userAuth=req.body;
     try{
         const usedEmail = await db.collection("Users").findOne({email: userAuth.email});
-        console.log(usedEmail);
         if(usedEmail) return res.status(409).send("Já possuimos um usuário com esse e-mail.");
 
         const usedCpf = await db.collection("Users").findOne({cpf: userAuth.cpf});
-        console.log(usedCpf);
         if(usedCpf) return res.status(409).send("Já possuimos um usuário com esse cpf")
 
         const hash = bcrypt.hashSync(userAuth.senha, 5)
